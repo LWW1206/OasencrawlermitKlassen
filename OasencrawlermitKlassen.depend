@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1678350775 source:e:\bif\2.semester\c++\oasencrawlermitklassen\main.cpp
+	<iostream>
+	<ctime>
+	<cassert>
+	"oasenheader.h"
+
+1677536289 e:\bif\2.semester\c++\oasencrawlermitklassen\oasenheader.h
+	<iostream>
+	<ctime>
+	<cassert>
+
