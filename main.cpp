@@ -41,14 +41,14 @@ void GameWorld::GenBlock(char &block) {
     }
 }
 
-void GameWorld::GenGrid(){
+void GameWorld::GenGrid() {
     do {
         for (int x = 0; x < MAX_X; x++) {
             for (int y = 0; y < MAX_Y; y++) {
                 GenBlock(matrix[x][y]);
             }
         }
-        if (matrix[player.getX()][player.getY()] == 'r'){
+        if (matrix[player.getX()][player.getY()] == 'r') {
             maxrelic -= 1;
         }
     } while (maxrelic <= 0);
@@ -75,7 +75,7 @@ void GameWorld::SpawnMonster() {
     matrix[monster.getX()][monster.getY()] = '!'; // monster
 }
 
-void GameWorld::PrintStats(){
+void GameWorld::PrintStats() {
     cout << "---------------------------------------" <<endl;
     cout << endl << "Level: " << level << endl;
     cout << "Rounds: " << player.getRounds() << endl;
@@ -89,15 +89,15 @@ void GameWorld::PrintStats(){
     cout << msg << endl;
 }
 
-void GameWorld::Statistics(char status){
+void GameWorld::Statistics(char status) {
     stats[cnt] = status;
     index[cnt] = player.getRounds();
     cnt += 1;
 }
 
-void GameWorld::PrintStatistics(){
+void GameWorld::PrintStatistics() {
     cout << "---------------------------------------" << endl << "History of events: " << endl;
-    for(int i = 0; i <= cnt; i++){
+    for(int i = 0; i <= cnt; i++) {
         if(stats[i] == 'x')
             cout << "Round" << index[i] << ": Player has stepped on danger tile ... lost the challenge, and received dmg" << endl;
         else if(stats[i] == 'r')
@@ -120,7 +120,7 @@ void GameWorld::PrintStatistics(){
     cout << "Total Healing Done " <<  player.getRegen() << endl;
 }
 
-void GameWorld::checkDangerBlock(char currBlock, int playerstats){
+void GameWorld::checkDangerBlock(char currBlock, int playerstats) {
     int num = rand()%10 + 1;
     cout << "The value of this Attribute-field: " << num << endl;
     if(playerstats <= num && player.getItem() == 1 && currBlock == 'S'){
@@ -128,18 +128,18 @@ void GameWorld::checkDangerBlock(char currBlock, int playerstats){
         Statistics('u');
         player.setItem(0);
     }
-    else if(playerstats <= num && player.getItem() == 2 && currBlock == 'D'){
+    else if(playerstats <= num && player.getItem() == 2 && currBlock == 'D') {
         cout << "You used up ur Dexterity-Potion to raise your DEX to max - You will take no damage" << endl;
         Statistics('u');
         player.setItem(0);
     }
-     else if(playerstats <= num && player.getItem() == 3 && currBlock == 'I'){
+     else if(playerstats <= num && player.getItem() == 3 && currBlock == 'I') {
         cout << "You used up ur Intelligence-Potion to raise your INT to max - You will take no damage" << endl;
         Statistics('u');
         player.setItem(0);
      }
     else {
-            if(playerstats <= num){
+            if(playerstats <= num) {
                 player.setHealth(player.getHealth() - 1);
                 player.setDmgTaken(player.getDmgTaken() + 1);
                 Statistics('x');
@@ -152,17 +152,17 @@ void GameWorld::checkDangerBlock(char currBlock, int playerstats){
     }
 }
 
-void GameWorld::findItem(){
+void GameWorld::findItem() {
     int num = rand()%3 + 1;
     string msg = (player.getItem() == 0) ? "You have found a potion" : "You already have a potion, you cant take another" ;
     cout << msg << endl;
-    if(player.getItem() == 0){
+    if(player.getItem() == 0) {
         Statistics('p');
         player.setItem(num);
     }
 }
 
-void GameWorld::levelUp(){
+void GameWorld::levelUp() {
     Statistics('l');
     level++;
     player.setRelics(0);
@@ -176,11 +176,12 @@ void GameWorld::levelUp(){
     cout << "---------------------------------------" <<endl;
     }
 
-void GameWorld::checkBlock(int x, int y){
+void GameWorld::checkBlock(int x, int y) {
     char currBlock = matrix[x][y];
     if(currBlock == '!'){
-        currBlock = monster.getPastBlock(); }
-    switch(currBlock){
+        currBlock = monster.getPastBlock(); 
+    }
+    switch(currBlock) {
     case '.':
         break;
     case 'S':
@@ -197,10 +198,10 @@ void GameWorld::checkBlock(int x, int y){
         cout << "You have found a relic!" << endl;
         findItem();
         player.setRelics(player.getRelics() + 1);
-        if(player.getRelics() == maxrelic){
+        if(player.getRelics() == maxrelic) {
             if(level == 3)
                 status = 0; //winning from getting all relics in all levels
-            else if(level < 3){
+            else if(level < 3) {
                 levelUp();
             }
         }
@@ -215,7 +216,7 @@ void GameWorld::checkBlock(int x, int y){
     }
 }
 
-void GameWorld::movePlayer(int x, int y){
+void GameWorld::movePlayer(int x, int y) {
     int pos_x = player.getX();
     int pos_y = player.getY();
     int new_pos_x = pos_x + x;
@@ -227,35 +228,35 @@ void GameWorld::movePlayer(int x, int y){
     matrix[new_pos_x][new_pos_y] = 'P';
 }
 
-bool GameWorld::checkMonster(){
+bool GameWorld::checkMonster() {
     if(monster.getX() - player.getX() == 0 && monster.getY() - player.getY() == 0)
         return true;
     return false;
 }
 
-void GameWorld::moveMonster(){
+void GameWorld::moveMonster() {
     int pos_x = monster.getX();
     int pos_y = monster.getY();
     int difference_x = monster.getX() - player.getX();
     int difference_y = monster.getY() - player.getY();
     bool checkagain = true;
-    if(checkMonster() == true){
+    if(checkMonster() == true) {
         dostuff();
         checkagain = false;
         }
-    else if(difference_x != 0){
+    else if(difference_x != 0) {
         if(difference_x > 0)
             monster.setX(monster.getX() - 1);
         else if(difference_x < 0)
             monster.setX(monster.getX() + 1);
     }
-    else if(difference_y != 0){
+    else if(difference_y != 0) {
         if(difference_y > 0)
             monster.setY(monster.getY() - 1);
         else if(difference_y < 0)
             monster.setY(monster.getY() + 1);
     }
-    if(checkagain == true){
+    if(checkagain == true) {
     matrix[pos_x][pos_y] = monster.getPastBlock(); //load past content of past block
     monster.setPastBlock(matrix[monster.getX()][monster.getY()]); //save content of next block
     matrix[monster.getX()][monster.getY()] = '!';  //monster moving to next block
@@ -264,12 +265,12 @@ void GameWorld::moveMonster(){
     }
 }
 
-void GameWorld::dostuff(){
+void GameWorld::dostuff() {
     player.setDmgTaken(player.getDmgTaken() + monster.getDmg());
     player.setHealth( player.getHealth() - monster.getDmg());
     cout << "You got caught by the monster and have received dmg..." << endl;
 
-    if(player.getHealth() <= 0){
+    if(player.getHealth() <= 0) {
             status = -1;
         }
         else {
@@ -280,8 +281,8 @@ void GameWorld::dostuff(){
         }
 }
 
-void GameWorld::playGame(){
-    do{
+void GameWorld::playGame() {
+    do {
         DisplayGame();
         cout << "Please enter a direction: ";
         string s;
@@ -291,21 +292,21 @@ void GameWorld::playGame(){
             cout << "Please enter a valid movement (w, a, s, d)" << endl;
             continue;
         }
-        else if(movement == 'w' && player.getX() == 0){
+        else if(movement == 'w' && player.getX() == 0) {
             cout << "You are moving out of the map, please choose another direction!" << endl;
         }
-        else if(movement == 'a' && player.getY() == 0){
+        else if(movement == 'a' && player.getY() == 0) {
             cout << "You are moving out of the map, please choose another direction!" << endl;
         }
-        else if(movement == 'd' && player.getY() == 4){
+        else if(movement == 'd' && player.getY() == 4) {
             cout << "You are moving out of the map, please choose another direction!" << endl;
         }
-        else if(movement == 's' && player.getX() == 4){
+        else if(movement == 's' && player.getX() == 4) {
             cout << "You are moving out of the map, please choose another direction!" << endl;
         }
         else {
         player.setRounds( player.getRounds() + 1);
-        switch(movement){
+        switch(movement) {
             case 'w':
                 movePlayer(-1, 0);
                 break;
@@ -319,7 +320,7 @@ void GameWorld::playGame(){
                 movePlayer(0, 1);
                 break;
             }
-    if(status == 1){
+    if(status == 1) {
         moveMonster();
         PrintStats();
     }
